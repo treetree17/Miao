@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>用户注册</title>
+	<meta charset="utf-8">
+    <link rel="stylesheet" href="./static/style.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<h1 align="center">注册</h1>
+	<form method="post" action="/my-endpoint1">
+	<button id="myButton">已有账号?点击此处登录！</button>
+		<div id="result"></div>
+    <script>
+      $(document).ready(function() {
+        $('#myButton').click(function() {
+          $.ajax({
+            url: '/my-endpoint1',
+            type: 'POST',
+            data: { },
+            success: function(response) {
+              $('#result').text(response);
+            }
+          });
+        });
+      });
+    </script>
+	</form>
+	<form method="post" action="/register">
+		<label for="UID">账户（8位）：</label>
+		<input type="text" name="UID" id="UID" minlength="8" maxlength="8" required><br>
+
+		<label for="Uname">昵称：</label>
+		<input type="text" name="Uname" id="Uname" required><br>
+
+		<label for="password">密码：</label>
+		<input type="password" name="password" id="password" minlength="8" required><br>
+
+		<label for="password-confirm">重复密码：</label>
+		<input type="password" name="password-confirm" id="password-confirm" minlength="8" required><br>
+
+		<label for="department">学院：</label>
+		<input type="text" name="department" id="department"><br>
+
+		<label for="major">专业：</label>
+		<input type="text" name="major" id="major"><br>
+
+		<input type="submit" value="注册">
+
+	</form>
+
+
+</body>
+</html>
+
+

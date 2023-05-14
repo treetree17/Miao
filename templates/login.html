@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>用户登录</title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="./static/style.css">
+
+</head>
+<body>
+	<div class="container">
+		<h1 align="center">登录</h1>
+		<form method="post" action="/my-endpoint2">
+	<button id="myButton">没有账号?点击此处注册！</button>
+		<div id="result"></div>
+    <script>
+      $(document).ready(function() {
+        $('#myButton').click(function() {
+          $.ajax({
+            url: '/my-endpoint2',
+            type: 'POST',
+            data: { },
+            success: function(response) {
+              $('#result').text(response);
+            }
+          });
+        });
+      });
+    </script>
+	</form>
+		<form action="/login" method="post">
+			<label for="role">身份选择：</label>
+			<select id="role" name="role">
+				<option value="admin">我是管理员</option>
+				<option value="user">我是用户</option>
+			</select>
+			<br>
+			<br>
+			<label for="UID">账号:</label>
+			<input type="text" id="UID" name="UID" required><br>
+
+			<label for="password">密码:</label>
+			<input type="password" id="password" name="password" required><br>
+
+			<input type="submit" value="登录">
+		</form>
+	</div>
+</body>
+</html>
