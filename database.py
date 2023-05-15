@@ -83,11 +83,11 @@ def convert(val: list):
         return None
     val = val[0]
     # 如果是user
-    if len(val) == 5:
+    if len(val) == 4:
         ans = {
-            'class': 'stu',
-            'SID': remove_blank(val[0]),
-            'SNAME': remove_blank(val[1]),
+            'class': 'user',
+            'UID': remove_blank(val[0]),
+            'UNAME': remove_blank(val[1]),
             'DEPARTMENT': remove_blank(val[2]),
             'MAJOR': remove_blank(val[3]),
         }
@@ -109,8 +109,9 @@ def init_database():
         conn.autocommit(False)
         cursor.execute('''
         USE MiaoMiao
+        
         CREATE TABLE administrator(
-         AID char(8) PRIMARY KEY,
+         AID char(5) PRIMARY KEY,
          password nvarchar(50)
         )
 
@@ -128,24 +129,21 @@ def init_database():
          csex nchar(1),
          ccolor nvarchar(50),
          clocation nvarchar(50),
-         cstatus char(1),
-         csterilization char(1),
-         story nvarchar(200)
+         cstatus char(2),
         )
 
         CREATE TABLE apply(
          CID char(5),
          UID char(8),
-         apply_time datetime,
+         apply_time nvarchar(50),
          PRIMARY KEY(UID,CID)
         )
 
         CREATE TABLE approve(
          CID char(5),
          UID char(8),
-         apply_time datetime,
-         approve_time datetime,
-         result boolean,
+         approve_time nvarchar(50),
+         result char(4),
          PRIMARY KEY(UID,CID)
         )
 
@@ -313,7 +311,6 @@ def update_student(user_message: dict) -> bool:
         return res
 
 
-
 # 获取学生信息
 def get_student_info(UID: str) -> dict:
     """
@@ -387,36 +384,17 @@ def search_student(info: str) -> list:
 
 
 # 获取学生的领养申请信息
-def get_apply(ID: str, CID: bool = False) -> list:
+def get_apply(UID: str):
     try:
         conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
         cursor = conn.cursor()
-        if ID == '' or ID == 'ID/姓名':
-            cursor.execute('''
-                SELECT UID, cat.CID, CName, apply_time, cstatus
-                FROM apply, cat
-                WHERE cat.CID =  apply.CID
-            ''')
-        elif CID:
-            cursor.execute('''
-                SELECT UID, cat.CID, CName, apply_time, cstatus
-                FROM apply, cat
-                WHERE cat.CID = %s AND cat.CID = apply.CID
-            ''', (ID,))
-        else:
-            cursor.execute('''
-                SELECT UID, cat.CID, CName, apply_time, cstatus
-                FROM apply, cat
-                WHERE UID = %s AND cat.CID = apply.CID
-            ''', (ID,))
+        cursor.execute('''
+                SELECT cat.CID, cname, apply_time, approve_time, result
+                FROM apply, approve, cat
+                WHERE approve.UID = %s AND approve.CID = apply.CID AND cat.CID = apply.CID AND cat.CID = approve.CID
+            ''', (UID,))
         res = cursor.fetchall()
-        temp = []
-        for i in res:
-            temp_ = []
-            for j in i:
-                temp_.append(remove_blank(j))
-            temp.append(temp_)
-        res = temp
+        print(res)
     except Exception as e:
         print('get apply error!')
         print(e)
@@ -661,6 +639,19 @@ def get_cat_info(CID: str) -> dict:
         return res
 
 
+# 获取所有猫猫信息
+def cat_info():
+    conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
+    cursor = conn.cursor()
+    cursor.execute('''
+            SELECT *
+            FROM cat
+            ''')
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+
 # 更新猫猫信息
 def update_cat(cat_info: dict) -> bool:
     """
@@ -783,16 +774,13 @@ def apply_cat(CID: str, UID: str) -> bool:
         cursor = conn.cursor()
         BORROW_DATE = time.strftime("%Y-%m-%d-%H:%M")
         cursor.execute('''
-        UPDATE cat
-        SET Cstatus = %s
-        WHERE CID = %s
         INSERT
         INTO apply
-        VALUES(%s, %s, %s, %s, 0)
-        ''', ("已领养", CID, CID, UID, BORROW_DATE))
+        VALUES(%s, %s, %s)
+        ''', (CID, UID, BORROW_DATE))
         conn.commit()
     except Exception as e:
-        print('borrow error!')
+        print('apply error!')
         print(e)
         res = False
     finally:
