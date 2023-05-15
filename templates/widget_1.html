@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>猫咪管理系统</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./static/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      padding: 10px;
+      background-color: #eee;
+      color: #333;
+      border-radius: 5px;
+    }
+
+    .content {
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    .cat-info {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .cat-info input[type="text"] {
+      width: 200px;
+    }
+
+    .cat-info button {
+      padding: 5px 10px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .approval-log {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .approval-log table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .approval-log th,
+    .approval-log td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .approval-log th {
+      background-color: #eee;
+    }
+
+    .adoption-approval {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .adoption-approval table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .adoption-approval th,
+    .adoption-approval td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .adoption-approval th {
+      background-color: #eee;
+    }
+
+    .user-management {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .user-management label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .user-management input[type="text"] {
+      width: 200px;
+    }
+
+    .user-management button {
+      padding: 5px 10px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function showCatInfo() {
+      document.getElementById("cat-info").style.display = "block";
+      document.getElementById("user-management").style.display = "none";
+      document.getElementById("adoption-approval").style.display = "none";
+      document.getElementById("approval-log").style.display = "none";
+    }
+
+    function showUserManagement() {
+      document.getElementById("cat-info").style.display = "none";
+      document.getElementById("user-management").style.display = "block";
+      document.getElementById("adoption-approval").style.display = "none";
+      document.getElementById("approval-log").style.display = "none";
+    }
+
+    function showAdoptionApproval() {
+      document.getElementById("cat-info").style.display = "none";
+      document.getElementById("user-management").style.display = "none";
+      document.getElementById("adoption-approval").style.display = "block";
+      document.getElementById("approval-log").style.display = "none";
+    }
+
+    function showApprovalLog() {
+      document.getElementById("cat-info").style.display = "none";
+      document.getElementById("user-management").style.display = "none";
+      document.getElementById("adoption-approval").style.display = "none";
+      document.getElementById("approval-log").style.display = "block";
+    }
+  </script>
+</head>
+<body>
+ <div class="container">
+   <h1>猫咪管理系统</h1>
+   <div class="menu">
+      <a href="#" onclick="showCatInfo()">查看和编辑猫的信息</a>
+      <a href="#" onclick="showUserManagement()">用户管理</a>
+      <a href="#" onclick="showAdoptionApproval()">审批领养</a>
+      <a href="#" onclick="showApprovalLog()">审批日志</a>
+    </div>
+  <div class="content">
+    <div id="cat-info" class="cat-info">
+      <h2>查看和编辑猫的信息</h2>
+      <input type="text" placeholder="搜索猫咪">
+      <button>搜索</button>
+      <table>
+        <tr>
+          <th>CID</th>
+                    <th>CName</th>
+          <th>操作</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>猫咪1</td>
+          <td><button>编辑</button></td>
+        </tr>
+        <!-- 其他猫咪信息的行 -->
+      </table>
+    </div>
+    <div id="user-management" class="user-management">
+      <h2>用户管理</h2>
+      <!-- 用户管理的内容 -->
+    </div>
+    <div id="adoption-approval" class="adoption-approval">
+      <h2>审批领养</h2>
+      <!-- 审批领养的内容 -->
+    </div>
+    <div id="approval-log" class="approval-log">
+      <h2>审批日志</h2>
+      <!-- 审批日志的内容 -->
+    </div>
+  </div>
+ </div>
+</body>
+</html>
+

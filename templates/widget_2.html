@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>猫咪管理系统</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./static/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      padding: 10px;
+      background-color: #eee;
+      color: #333;
+      border-radius: 5px;
+    }
+
+    .content {
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    .cat-info {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .cat-info input[type="text"] {
+      width: 200px;
+    }
+
+    .cat-info button {
+      padding: 5px 10px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .adoption-status {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .adoption-status table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .adoption-status th,
+    .adoption-status td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .adoption-status th {
+      background-color: #eee;
+    }
+
+    .edit-profile {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .edit-profile label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .edit-profile input[type="text"] {
+      width: 200px;
+    }
+
+    .edit-profile button {
+      padding: 5px 10px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function showCatInfo() {
+      document.getElementById("cat-info").style.display = "block";
+      document.getElementById("adoption-status").style.display = "none";
+      document.getElementById("edit-profile").style.display = "none";
+    }
+
+    function showAdoptionStatus() {
+      document.getElementById("cat-info").style.display = "none";
+      document.getElementById("adoption-status").style.display = "block";
+      document.getElementById("edit-profile").style.display = "none";
+    }
+
+    function showEditProfile() {
+      document.getElementById("cat-info").style.display = "none";
+      document.getElementById("adoption-status").style.display = "none";
+      document.getElementById("edit-profile").style.display = "block";
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>猫咪管理系统</h1>
+    <div class="menu">
+      <a href="#" onclick="showCatInfo()">查看猫信息</a>
+      <a href="#" onclick="showAdoptionStatus()">查看领养状态</a>
+      <a href="#" onclick="showEditProfile()">编辑个人信息</a>
+    </div>
+    <div class="content">
+      <div id="cat-info" class="cat-info">
+        <h2>查看猫信息</h2>
+        <input type="text" placeholder="搜索猫咪">
+        <button>搜索</button>
+        <button>发领养请求</button>
+        <!-- 这里可以展示猫咪信息的列表或其他视图 -->
+      </div>
+      <div id="adoption-status" class="adoption-status">
+        <h2>查看领养状态</h2>
+        <table>
+          <tr>
+            <th>CID</th>
+            <th>CName</th>
+            <th>申请时间</th>
+            <th>审批时间</th>
+            <th>审批状态</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>猫咪1</td>
+            <td>2023-05-01</td>
+            <td>2023-05-05</td>
+            <td>成功</td>
+          </tr>
+          <!-- 其他领养状态的行 -->
+        </table>
+      </div>
+      <div id="edit-profile" class="edit-profile">
+        <h2>编辑个人信息</h2>
+        <form>
+          <label for="name">姓名:</label>
+          <input type="text" id="name" name="name" placeholder="请输入您的姓名">
+
+          <label for="email">邮箱:</label>
+          <input type="text" id="email" name="email" placeholder="请输入您的邮箱">
+
+          <label for="password">密码:</label>
+          <input type="password" id="password" name="password" placeholder="请输入您的密码">
+
+          <button>保存</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+

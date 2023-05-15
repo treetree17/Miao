@@ -65,12 +65,15 @@ def login():
             'ID': userid,
             'PASSWORD': password
         }
-
         user = database.signin(info)
-        if user is not None:
+        if user['class'] == 'admin':
             print('登录成功！')
-        else:
-            print('登录失败!')
+            return render_template('widget_1.html')
+        if user['class'] == 'user':
+            print('登录成功！')
+            return render_template('widget_2.html')
+    else:
+        print('登录失败！')
 
 
 @app.route('/my-endpoint1', methods=['POST'])

@@ -83,14 +83,16 @@ def convert(val: list):
         return None
     val = val[0]
     # 如果是user
-    if len(val) == 5:
+    print(val)
+    if len(val) == 4:
         ans = {
-            'class': 'stu',
-            'SID': remove_blank(val[0]),
-            'SNAME': remove_blank(val[1]),
+            'class': 'user',
+            'UID': remove_blank(val[0]),
+            'UNAME': remove_blank(val[1]),
             'DEPARTMENT': remove_blank(val[2]),
             'MAJOR': remove_blank(val[3]),
         }
+        print(ans)
     else:
         ans = {
             'class': 'admin',
@@ -311,7 +313,6 @@ def update_student(user_message: dict) -> bool:
         if conn:
             conn.close()
         return res
-
 
 
 # 获取学生信息
