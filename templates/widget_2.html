@@ -47,12 +47,28 @@
       width: 200px;
     }
 
+     .cat-info table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
     .cat-info button {
       padding: 5px 10px;
       background-color: #eee;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+    }
+
+    .cat-info th,
+    .cat-info td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .cat-info th {
+      background-color: #eee;
     }
 
     .adoption-status {
@@ -76,6 +92,18 @@
       background-color: #eee;
     }
 
+    .adoption-status button {
+      padding: 5px 10px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .adoption-status input[type="text"] {
+      width: 200px;
+    }
+
     .edit-profile {
       display: none;
       margin-bottom: 20px;
@@ -97,9 +125,91 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    .edit-profile input[type="text"], input[type="password"] {
+     display: block;
+     width: 95%;
+     padding: 10px;
+     border-radius: 5px;
+     border: 1px solid #ddd;
+     margin-bottom: 10px;
+     }
+
+    .edit-profile input[type="submit"] {
+     display: block;
+     width: 100%;
+     padding: 10px;
+     border-radius: 5px;
+     border: none;
+     background-color: #007bff;
+     color: #fff;
+     font-size: 18px;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     }
+
+     .edit-profile input[type="submit"]:hover {
+      background-color: #0062cc;
+     }
+
   </style>
   <script>
-    function showCatInfo() {
+
+<!--    function showCatInfo() {-->
+<!--      document.getElementById("cat-info").style.display = "block";-->
+<!--      document.getElementById("adoption-status").style.display = "none";-->
+<!--      document.getElementById("edit-profile").style.display = "none";-->
+<!--    }-->
+
+<!--    function showAdoptionStatus() {-->
+<!--      document.getElementById("cat-info").style.display = "none";-->
+<!--      document.getElementById("adoption-status").style.display = "block";-->
+<!--      document.getElementById("edit-profile").style.display = "none";-->
+<!--    }-->
+
+<!--    function showEditProfile() {-->
+<!--      document.getElementById("cat-info").style.display = "none";-->
+<!--      document.getElementById("adoption-status").style.display = "none";-->
+<!--      document.getElementById("edit-profile").style.display = "block";-->
+<!--    }-->
+
+    function changeButtonText(event) {
+      event.preventDefault();
+      console.log('changeButtonText function is called.');
+      var button = event.target;
+      button.innerHTML = "已提交申请";
+      button.style.backgroundColor = "grey";
+      var row = $(event.target).closest('tr');
+      var rowId = row.find('td:first').text();
+      var resultDiv = row.find('.result1');
+      $.ajax({
+       url: '/apply',
+       type: 'POST',
+       data: { rowId: rowId },
+       success: function(response) {
+         resultDiv.text(response);
+        }
+      });
+    }
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 align="center">猫咪管理系统</h1>
+    <div class="menu">
+      <a href="#" id="catInfoLink" onclick="bindWindowOnLoad(showCatInfo)">查看猫信息</a>
+      <a href="#" id="adoptionStatusLink" onclick="bindWindowOnLoad(showAdoptionStatus)">查看领养状态</a>
+      <a href="#" onclick="showEditProfile()">编辑个人信息</a>
+      <script>
+      function bindWindowOnLoad(callback) {
+      callback();
+      window.onload = callback();
+    }
+
+      function showCatInfo() {
       document.getElementById("cat-info").style.display = "block";
       document.getElementById("adoption-status").style.display = "none";
       document.getElementById("edit-profile").style.display = "none";
@@ -116,56 +226,95 @@
       document.getElementById("adoption-status").style.display = "none";
       document.getElementById("edit-profile").style.display = "block";
     }
-  </script>
-</head>
 
-<body>
-  <div class="container">
-    <h1>猫咪管理系统</h1>
-    <div class="menu">
-      <a href="#" onclick="showCatInfo()">查看猫信息</a>
-      <a href="#" onclick="showAdoptionStatus()">查看领养状态</a>
-      <a href="#" onclick="showEditProfile()">编辑个人信息</a>
+</script>
     </div>
     <div class="content">
       <div id="cat-info" class="cat-info">
         <h2>查看猫信息</h2>
+        <form action="/cat">
+        <table>
+           <thead>
+           <tr>
+            <th>猫咪编号</th>
+            <th>猫咪名字</th>
+            <th>猫咪性别</th>
+            <th>毛色</th>
+            <th>活动区域</th>
+            <th>状况</th>
+            <th>发送领养申请</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for row in rows1 %}
+         <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td><button class="myButton" onclick="changeButtonText(event)">发送领养申请</button>
+		<div id="result1"></div>
+        </td>
+         </tr>
+        {% endfor %}
+        </tbody>
+        </table>
         <input type="text" placeholder="搜索猫咪">
         <button>搜索</button>
-        <button>发领养请求</button>
-        <!-- 这里可以展示猫咪信息的列表或其他视图 -->
+        </form>
       </div>
       <div id="adoption-status" class="adoption-status">
         <h2>查看领养状态</h2>
-        <table>
-          <tr>
-            <th>CID</th>
-            <th>CName</th>
+        <form action="/apply_info">
+         <table>
+           <thead>
+           <tr>
+            <th>猫咪编号</th>
+            <th>猫咪名字</th>
             <th>申请时间</th>
             <th>审批时间</th>
             <th>审批状态</th>
           </tr>
-          <tr>
-            <td>1</td>
-            <td>猫咪1</td>
-            <td>2023-05-01</td>
-            <td>2023-05-05</td>
-            <td>成功</td>
-          </tr>
-          <!-- 其他领养状态的行 -->
+        </thead>
+        <tbody>
+            {% for row in rows2 %}
+         <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+         </tr>
+        {% endfor %}
+        </tbody>
         </table>
+        <input type="text" placeholder="搜索">
+        <button>搜索</button>
+        </form>
       </div>
       <div id="edit-profile" class="edit-profile">
         <h2>编辑个人信息</h2>
+
         <form>
-          <label for="name">姓名:</label>
-          <input type="text" id="name" name="name" placeholder="请输入您的姓名">
+         <label for="UID">账号（8位）：</label>
+		<input type="text" name="UID" id="UID" minlength="8" maxlength="8" required><br>
 
-          <label for="email">邮箱:</label>
-          <input type="text" id="email" name="email" placeholder="请输入您的邮箱">
+		<label for="Uname">昵称：</label>
+		<input type="text" name="Uname" id="Uname" required><br>
 
-          <label for="password">密码:</label>
-          <input type="password" id="password" name="password" placeholder="请输入您的密码">
+		<label for="password">旧密码：</label>
+		<input type="password" name="password" id="password" minlength="8" required><br>
+
+		<label for="password-new">新密码（如果不修改密码请输入旧密码）：</label>
+		<input type="password" name="password-new" id="password-new" minlength="8" required><br>
+
+		<label for="department">学院：</label>
+		<input type="text" name="department" id="department"><br>
+
+		<label for="major">专业：</label>
+		<input type="text" name="major" id="major"><br>
 
           <button>保存</button>
         </form>
