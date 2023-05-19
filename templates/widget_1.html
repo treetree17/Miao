@@ -47,12 +47,28 @@
       width: 200px;
     }
 
+     .cat-info table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
     .cat-info button {
       padding: 5px 10px;
       background-color: #eee;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+    }
+
+    .cat-info th,
+    .cat-info td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .cat-info th {
+      background-color: #eee;
     }
 
     .approval-log {
@@ -76,6 +92,14 @@
       background-color: #eee;
     }
 
+    .approval-log button {
+      padding: 5px 10px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     .adoption-approval {
       display: none;
       margin-bottom: 20px;
@@ -97,18 +121,33 @@
       background-color: #eee;
     }
 
+    .adoption-approval button {
+      padding: 5px 10px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     .user-management {
       display: none;
       margin-bottom: 20px;
     }
 
-    .user-management label {
-      display: block;
-      margin-bottom: 5px;
+    .user-management table {
+      width: 100%;
+      border-collapse: collapse;
     }
 
-    .user-management input[type="text"] {
-      width: 200px;
+    .user-management th,
+    .user-management td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .user-management th {
+      background-color: #eee;
     }
 
     .user-management button {
@@ -118,13 +157,380 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    .user-management input[type="text"] {
+      width: 200px;
+    }
+
+    #editModal {
+     display: none;
+
+    }
+
+    #editModal body {
+     background-color: #f5f5f5;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 16px;
+     line-height: 1.0;
+     margin: 0;
+     padding: 0;
+    }
+
+
+    #editModal form {
+     max-width: 600px;
+     margin: 0 auto;
+     background-color: #fff;
+     border-radius: 5px;
+     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+     padding: 20px;
+    }
+
+    #editModal label {
+     display: block;
+     margin-bottom: 5px;
+    }
+
+    #editModal input[type="text"], input[type="password"] {
+     display: block;
+     width: 95%;
+     padding: 10px;
+     border-radius: 5px;
+     border: 1px solid #ddd;
+     margin-bottom: 10px;
+    }
+
+    #editModal input[type="submit"] {
+     display: block;
+     width: 100%;
+     padding: 10px;
+     border-radius: 5px;
+     border: none;
+     background-color: #007bff;
+     color: #fff;
+     font-size: 18px;
+     cursor: pointer;
+     transition: all 0.3s ease;
+    }
+
+    #editModal input[type="submit"]:hover {
+     background-color: #0062cc;
+    }
+
+    #editModal2 {
+     display: none;
+
+    }
+
+    #editModal2 body {
+     background-color: #f5f5f5;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 16px;
+     line-height: 1.0;
+     margin: 0;
+     padding: 0;
+    }
+
+
+    #editModal2 form {
+     max-width: 600px;
+     margin: 0 auto;
+     background-color: #fff;
+     border-radius: 5px;
+     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+     padding: 20px;
+    }
+
+    #editModal2 label {
+     display: block;
+     margin-bottom: 5px;
+    }
+
+    #editModal2 input[type="text"], input[type="password"] {
+     display: block;
+     width: 95%;
+     padding: 10px;
+     border-radius: 5px;
+     border: 1px solid #ddd;
+     margin-bottom: 10px;
+    }
+
+    #editModal2 input[type="submit"] {
+     display: block;
+     width: 100%;
+     padding: 10px;
+     border-radius: 5px;
+     border: none;
+     background-color: #007bff;
+     color: #fff;
+     font-size: 18px;
+     cursor: pointer;
+     transition: all 0.3s ease;
+    }
+
+    #editModal2 input[type="submit"]:hover {
+     background-color: #0062cc;
+    }
+
+     #addModal {
+     display: none;
+
+    }
+
+    #addModal body {
+     background-color: #f5f5f5;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 16px;
+     line-height: 1.0;
+     margin: 0;
+     padding: 0;
+    }
+
+
+    #addModal form {
+     max-width: 600px;
+     margin: 0 auto;
+     background-color: #fff;
+     border-radius: 5px;
+     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+     padding: 20px;
+    }
+
+    #addModal label {
+     display: block;
+     margin-bottom: 5px;
+    }
+
+    #addModal input[type="text"], input[type="password"] {
+     display: block;
+     width: 95%;
+     padding: 10px;
+     border-radius: 5px;
+     border: 1px solid #ddd;
+     margin-bottom: 10px;
+    }
+
+    #addModal input[type="submit"] {
+     display: block;
+     width: 100%;
+     padding: 10px;
+     border-radius: 5px;
+     border: none;
+     background-color: #007bff;
+     color: #fff;
+     font-size: 18px;
+     cursor: pointer;
+     transition: all 0.3s ease;
+    }
+
+    #addModal input[type="submit"]:hover {
+     background-color: #0062cc;
+    }
+
+    .button-container {
+     display: flex;
+     justify-content: center;
+     margin-top: 20px;
+    }
+
   </style>
   <script>
-    function showCatInfo() {
+window.onload = function() {
+  // 获取所有编辑按钮
+  var editButtons = document.querySelectorAll(".editButton");
+    // 为每个编辑按钮添加事件监听器
+
+  editButtons.forEach(function(button) {
+    button.addEventListener("click", openEditModal);
+  });
+};
+
+function openEditModal(event) {
+  event.preventDefault();
+
+  var catId = event.target.dataset.catId;
+  var catName = event.target.dataset.catName;
+  var catGender = event.target.dataset.catGender;
+  var catColor = event.target.dataset.catColor;
+  var catArea = event.target.dataset.catArea;
+  var catStatus = event.target.dataset.catStatus;
+
+  var editForm = document.getElementById("editForm");
+  editForm.CID.value = catId;
+  editForm.Cname.value = catName;
+  editForm.gender.value = catGender;
+  editForm.color.value = catId;
+  editForm.activity_area.value = catArea;
+  editForm.status.value = catStatus;
+
+  var editModal = document.getElementById("editModal");
+  editModal.style.display = "block";
+}
+
+function openEditModal2(event) {
+  event.preventDefault();
+
+  var userId = event.target.dataset.userId;
+  var userName = event.target.dataset.userName;
+  var userPassword = event.target.dataset.userPassword;
+  var userDepartment = event.target.dataset.userDepartment;
+  var userMajor = event.target.dataset.userMajor;
+  var userCat = event.target.dataset.userCat;
+
+  var editForm = document.getElementById("editForm2");
+  editForm.UID.value = userId;
+  editForm.Uname.value = userName;
+  editForm.password.value = userPassword;
+  editForm.department.value = userDepartment;
+  editForm.major.value = userMajor;
+  editForm.cat.value = userCat;
+
+  // 显示弹窗
+  var editModal2 = document.getElementById("editModal2");
+  editModal2.style.display = "block";
+}
+
+function closeEditModal(){
+  editModal.style.display = "none";
+  editModal2.style.display = "none";
+}
+
+function closeEditModal2(){
+  editModal.style.display = "none";
+  editModal2.style.display = "none";
+}
+
+function changeButtonText1(event) {
+      event.preventDefault();
+      console.log('changeButtonText1 function is called.');
+      var button = event.target;
+      button.innerHTML = "已同意申请";
+      button.style.backgroundColor = "grey";
+      var row = $(event.target).closest('tr');
+      var rowId = row.find('td:first').text();
+      var rowId2 = row.find('td:eq(4)').text();
+      var resultDiv = row.find('.result1');
+      $.ajax({
+       url: '/approve1',
+       type: 'POST',
+       data: { rowId: rowId, rowId2: rowId2 },
+       success: function(response) {
+         resultDiv.text(response);
+        }
+      });
+    }
+
+function changeButtonText2(event) {
+      event.preventDefault();
+      console.log('changeButtonText2 function is called.');
+      var button = event.target;
+      button.innerHTML = "已拒绝申请";
+      button.style.backgroundColor = "grey";
+      var row = $(event.target).closest('tr');
+      var rowId = row.find('td:first').text();
+      var rowId2 = row.find('td:eq(4)').text();
+      var resultDiv = row.find('.result2');
+      $.ajax({
+       url: '/approve2',
+       type: 'POST',
+       data: { rowId: rowId, rowId2: rowId2 },
+       success: function(response) {
+         resultDiv.text(response);
+        }
+      });
+    }
+
+function deleteRow(event) {
+   event.preventDefault();
+   var row = $(event.target).closest('tr');
+   var catId = row.find('td:first').text();
+
+   $.ajax({
+      url: '/delete_cat',
+      type: 'POST',
+      data: { cat_id: catId },
+      success: function(response) {
+         if (response === 'Success') {
+            row.remove(); // 从DOM中删除行
+         } else {
+            console.error('删除失败');
+         }
+      },
+      error: function(error) {
+         console.error('请求错误:', error);
+      }
+   });
+}
+
+function openAddModal() {
+  $('#addModal').css('display', 'block');
+}
+
+function closeAddModal() {
+  $('#addModal').css('display', 'none');
+}
+
+function addRow(event) {
+  event.preventDefault();
+  var form = $(event.target).closest('form');
+  var rowData = form.serializeArray();
+
+  $.ajax({
+    url: '/add_cat',
+    type: 'POST',
+    data: rowData,
+    success: function(response) {
+      // 根据实际情况处理成功响应
+      if (response === 'Success') {
+        // 在表格的tbody中添加新行
+        var newRow = $('<tr>');
+        rowData.forEach(function(field) {
+          newRow.append('<td>' + field.value + '</td>');
+        });
+        newRow.append('<td><button class="editButton" onclick="openEditModal(event)">编辑</button></td>');
+        newRow.append('<td><button class="deleteButton" onclick="deleteRow(event)">删除</button></td>');
+        $('table tbody').append(newRow);
+
+        // 清空表单数据
+        form[0].reset();
+
+        // 关闭添加模态框
+        closeAddModal();
+      } else {
+        console.error('添加失败');
+      }
+    },
+    error: function(error) {
+      console.error('请求错误:', error);
+    }
+  });
+}
+
+  </script>
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+ <div class="container">
+   <h1>猫咪管理系统</h1>
+   <div class="menu">
+      <a href="#" id="catInfoLink" onclick="bindWindowOnLoad(showCatInfo)">查看和编辑猫的信息</a>
+      <a href="#" id="UserManagement" onclick="bindWindowOnLoad(showUserManagement)">用户管理</a>
+      <a href="#" id="AdoptionApproval" onclick="bindWindowOnLoad(showAdoptionApproval)">审批领养</a>
+      <a href="#" id="ApprovalLog" onclick="bindWindowOnLoad(showApprovalLog)">审批日志</a>
+        <script>
+      function bindWindowOnLoad(callback) {
+      window.onload = callback();
+      callback();
+    }
+
+     function showCatInfo() {
       document.getElementById("cat-info").style.display = "block";
       document.getElementById("user-management").style.display = "none";
       document.getElementById("adoption-approval").style.display = "none";
       document.getElementById("approval-log").style.display = "none";
+      editModal.style.display = "none";
+      editModal2.style.display = "none";
     }
 
     function showUserManagement() {
@@ -132,6 +538,8 @@
       document.getElementById("user-management").style.display = "block";
       document.getElementById("adoption-approval").style.display = "none";
       document.getElementById("approval-log").style.display = "none";
+      editModal.style.display = "none";
+      editModal2.style.display = "none";
     }
 
     function showAdoptionApproval() {
@@ -139,6 +547,8 @@
       document.getElementById("user-management").style.display = "none";
       document.getElementById("adoption-approval").style.display = "block";
       document.getElementById("approval-log").style.display = "none";
+      editModal.style.display = "none";
+      editModal2.style.display = "none";
     }
 
     function showApprovalLog() {
@@ -146,49 +556,241 @@
       document.getElementById("user-management").style.display = "none";
       document.getElementById("adoption-approval").style.display = "none";
       document.getElementById("approval-log").style.display = "block";
+      editModal.style.display = "none";
+      editModal2.style.display = "none";
     }
-  </script>
-</head>
-<body>
- <div class="container">
-   <h1>猫咪管理系统</h1>
-   <div class="menu">
-      <a href="#" onclick="showCatInfo()">查看和编辑猫的信息</a>
-      <a href="#" onclick="showUserManagement()">用户管理</a>
-      <a href="#" onclick="showAdoptionApproval()">审批领养</a>
-      <a href="#" onclick="showApprovalLog()">审批日志</a>
+
+</script>
     </div>
   <div class="content">
     <div id="cat-info" class="cat-info">
-      <h2>查看和编辑猫的信息</h2>
-      <input type="text" placeholder="搜索猫咪">
-      <button>搜索</button>
-      <table>
-        <tr>
-          <th>CID</th>
-                    <th>CName</th>
-          <th>操作</th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>猫咪1</td>
-          <td><button>编辑</button></td>
-        </tr>
-        <!-- 其他猫咪信息的行 -->
-      </table>
+        <h2>查看和编辑猫信息</h2>
+        <form action="/cat2">
+            <button onclick="searchCat()">查看</button>
+            </form>
+        <table>
+           <thead>
+           <tr>
+            <th>猫咪编号</th>
+            <th>猫咪名字</th>
+            <th>猫咪性别</th>
+            <th>毛色</th>
+            <th>活动区域</th>
+            <th>状况</th>
+            <th>编辑</th>
+            <th>删除</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for row in rows1 %}
+         <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td><button class="editButton" data-cat-id="{{ row[0] }}" data-cat-name="{{ row[1] }}" data-cat-gender="{{ row[2] }}" data-cat-color="{{ row[3] }}" data-cat-area="{{ row[4] }}" data-cat-status="{{ row[5] }}" onclick="openEditModal(event)">编辑</button>
+        </td>
+             <td><button class="deleteButton" onclick="deleteRow(event)">删除</button>
+        </td>
+         </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        <div id="editModal" class="modal" style="display: none;">
+         <div class="modal-content">
+         <form id="editForm" method="post" action="/edit_cat">
+
+         <label for="CID">猫咪编号：</label>
+		 <input type="text" name="CID" id="CID" minlength="5" maxlength="5" required readonly><br>
+
+		<label for="cname">猫咪名字：</label>
+		<input type="text" name="cname" id="cname" required><br>
+
+		<label for="gender">猫咪性别：</label>
+		<input type="text" name="gender" id="gender"  required><br>
+
+		<label for="color">毛色：</label>
+		<input type="text" name="color" id="color"  required><br>
+
+		<label for="activity_area">活动区域：</label>
+		<input type="text" name="activity_area" id="activity_area"><br>
+
+		<label for="status">状况：</label>
+		<input type="text" name="status" id="status"><br>
+
+        <button type="submit">保存</button>
+        </form>
+
+        <div class="button-container">
+         <button onclick="closeEditModal()">关闭</button>
+        </div>
+       </div>
+      </div>
+
+        <button onclick="openAddModal()">新增猫咪</button>
+         <div id="addModal" class="modal" style="display: none;">
+         <div class="modal-content">
+         <form id="addForm" method="post" action="/add_cat">
+
+        <label for="CID">猫咪编号：</label>
+        <input type="text" name="CID2" id="CID2" minlength="5" maxlength="5" required><br>
+
+		<label for="Cname">猫咪名字：</label>
+		<input type="text" name="Cname2" id="Cname2" required><br>
+
+		<label for="gender">猫咪性别：</label>
+		<input type="text" name="gender2" id="gender2"  required><br>
+
+		<label for="color">毛色：</label>
+		<input type="text" name="color2" id="color2"  required><br>
+
+		<label for="activity_area">活动区域：</label>
+		<input type="text" name="activity_area2" id="activity_area2"><br>
+
+		<label for="status">状况：</label>
+		<input type="text" name="status2" id="status2"><br>
+
+         <button type="submit">添加</button>
+         </form>
+         <div class="button-container">
+          <button onclick="closeAddModal()">关闭</button>
+         </div>
+       </div>
+     </div>
+
+
     </div>
     <div id="user-management" class="user-management">
       <h2>用户管理</h2>
-      <!-- 用户管理的内容 -->
+            <form action="/user">
+            <button onclick="searchUser()">查看</button>
+            </form>
+        <table>
+           <thead>
+           <tr>
+            <th>用户账号</th>
+            <th>用户名字</th>
+            <th>用户密码</th>
+            <th>学院</th>
+            <th>专业</th>
+            <th>领养猫咪</th>
+            <th>编辑</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for row in rows2 %}
+         <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td><button class="editButton" data-user-id="{{ row[0] }}" data-user-name="{{ row[1] }}" data-user-password="{{ row[2] }}" data-user-department="{{ row[3] }}" data-user-major="{{ row[4] }}" data-user-cat="{{ row[5] }}" onclick="openEditModal2(event)">编辑</button>
+        </td>
+         </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        <div id="editModal2" class="modal" style="display: none;">
+         <div class="modal-content">
+         <form id="editForm2" method="post" action="/edit_user2">
+
+    	<label for="UID">账号：</label>
+		<input type="text" name="UID" id="UID" minlength="8" maxlength="8" required readonly><br>
+
+		<label for="Uname">昵称：</label>
+		<input type="text" name="Uname" id="Uname" required><br>
+
+		<label for="password">密码：</label>
+		<input type="text" name="password" id="password" minlength="8" required><br>
+
+		<label for="department">学院：</label>
+		<input type="text" name="department" id="department"><br>
+
+		<label for="major">专业：</label>
+		<input type="text" name="major" id="major"><br>
+
+        <label for="cat">领养猫咪：</label>
+		<input type="text" name="cat" id="cat" minlength="5" maxlength="5" required readonly><br>
+
+		<button type="submit">保存</button>
+        </form>
+        <div class="button-container">
+        <button onclick="closeEditModal2()">关闭</button>
+        </div>
+       </div>
+    </div>
     </div>
     <div id="adoption-approval" class="adoption-approval">
       <h2>审批领养</h2>
-      <!-- 审批领养的内容 -->
-    </div>
+        <form action="/apply_info2">
+            <button onclick="searchAdoption()">查看</button>
+            </form>
+        <table>
+           <thead>
+            <tr>
+            <th>用户账号</th>
+            <th>用户名字</th>
+            <th>学院</th>
+            <th>专业</th>
+            <th>申请领养猫咪编号</th>
+            <th> </th>
+            <th> </th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for row in rows3 %}
+         <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td><button class="myButton" onclick="changeButtonText1(event)">同意</button>
+             <div id="result1"></div></td>
+            <td><button class="myButton" onclick="changeButtonText2(event)">拒绝</button>
+		     <div id="result2"></div></td>
+         </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+      </div>
+
     <div id="approval-log" class="approval-log">
       <h2>审批日志</h2>
-      <!-- 审批日志的内容 -->
-    </div>
+         <form action="/approve_log">
+            <button onclick="searchAdoption()">查看</button>
+            </form>
+        <table>
+           <thead>
+            <tr>
+            <th>用户账号</th>
+            <th>用户名字</th>
+            <th>申请领养猫咪编号</th>
+            <th>猫咪名字</th>
+            <th>申请时间</th>
+            <th>审批时间</th>
+            <th>审批结果</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for row in rows4 %}
+         <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+         </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+      </div>
   </div>
  </div>
 </body>

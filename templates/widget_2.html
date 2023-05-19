@@ -58,6 +58,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      text-align: center;
     }
 
     .cat-info th,
@@ -155,24 +156,6 @@
   </style>
   <script>
 
-<!--    function showCatInfo() {-->
-<!--      document.getElementById("cat-info").style.display = "block";-->
-<!--      document.getElementById("adoption-status").style.display = "none";-->
-<!--      document.getElementById("edit-profile").style.display = "none";-->
-<!--    }-->
-
-<!--    function showAdoptionStatus() {-->
-<!--      document.getElementById("cat-info").style.display = "none";-->
-<!--      document.getElementById("adoption-status").style.display = "block";-->
-<!--      document.getElementById("edit-profile").style.display = "none";-->
-<!--    }-->
-
-<!--    function showEditProfile() {-->
-<!--      document.getElementById("cat-info").style.display = "none";-->
-<!--      document.getElementById("adoption-status").style.display = "none";-->
-<!--      document.getElementById("edit-profile").style.display = "block";-->
-<!--    }-->
-
     function changeButtonText(event) {
       event.preventDefault();
       console.log('changeButtonText function is called.');
@@ -181,6 +164,20 @@
       button.style.backgroundColor = "grey";
       var row = $(event.target).closest('tr');
       var rowId = row.find('td:first').text();
+      var adoptStatus = row.find('td:eq(5)').text(); // 获取第5个<td>元素的内容
+
+      if (adoptStatus === '已领养') { // 检查领养状态是否为'已领养'
+      button.textContent = "已被领养"; // 修改按钮文本
+      button.disabled = true; // 禁用按钮
+      return; // 结束函数执行
+      }
+
+      if (adoptStatus === '申请中') { // 检查领养状态是否为'已领养'
+      button.textContent = "申请中"; // 修改按钮文本
+      button.disabled = true; // 禁用按钮
+      return; // 结束函数执行
+      }
+
       var resultDiv = row.find('.result1');
       $.ajax({
        url: '/apply',
@@ -205,8 +202,8 @@
       <a href="#" onclick="showEditProfile()">编辑个人信息</a>
       <script>
       function bindWindowOnLoad(callback) {
-      callback();
       window.onload = callback();
+      callback();
     }
 
       function showCatInfo() {
@@ -233,6 +230,8 @@
       <div id="cat-info" class="cat-info">
         <h2>查看猫信息</h2>
         <form action="/cat">
+            <button onclick="searchCat()">查看</button>
+            </form>
         <table>
            <thead>
            <tr>
@@ -261,13 +260,12 @@
         {% endfor %}
         </tbody>
         </table>
-        <input type="text" placeholder="搜索猫咪">
-        <button>搜索</button>
-        </form>
       </div>
       <div id="adoption-status" class="adoption-status">
         <h2>查看领养状态</h2>
         <form action="/apply_info">
+            <button>查看</button>
+            </form>
          <table>
            <thead>
            <tr>
@@ -290,16 +288,11 @@
         {% endfor %}
         </tbody>
         </table>
-        <input type="text" placeholder="搜索">
-        <button>搜索</button>
-        </form>
       </div>
       <div id="edit-profile" class="edit-profile">
         <h2>编辑个人信息</h2>
 
-        <form>
-         <label for="UID">账号（8位）：</label>
-		<input type="text" name="UID" id="UID" minlength="8" maxlength="8" required><br>
+        <form action="/edit_user" method="post">
 
 		<label for="Uname">昵称：</label>
 		<input type="text" name="Uname" id="Uname" required><br>
@@ -307,8 +300,8 @@
 		<label for="password">旧密码：</label>
 		<input type="password" name="password" id="password" minlength="8" required><br>
 
-		<label for="password-new">新密码（如果不修改密码请输入旧密码）：</label>
-		<input type="password" name="password-new" id="password-new" minlength="8" required><br>
+		<label for="password_new">新密码（如果不修改密码请输入旧密码）：</label>
+		<input type="password" name="password_new" id="password_new" minlength="8" required><br>
 
 		<label for="department">学院：</label>
 		<input type="text" name="department" id="department"><br>
@@ -316,7 +309,7 @@
 		<label for="major">专业：</label>
 		<input type="text" name="major" id="major"><br>
 
-          <button>保存</button>
+        <input type="submit" id="loadTableButton" value="保存">
         </form>
       </div>
     </div>

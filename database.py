@@ -126,10 +126,10 @@ def init_database():
         CREATE TABLE cat(
          CID char(5) PRIMARY KEY,
          cname nvarchar(50),
-         csex nchar(1),
+         csex nvarchar(50),
          ccolor nvarchar(50),
          clocation nvarchar(50),
-         cstatus char(2),
+         cstatus nvarchar(50),
         )
 
         CREATE TABLE apply(
@@ -265,12 +265,13 @@ def signin(user_message: dict) -> dict:
 
 
 # 更新学生信息
-def update_student(user_message: dict) -> bool:
+def update_user(user_message: dict) -> bool:
     '''
     传入字典格式如下
     user_message{
         'UID': str,
         'PASSWORD': str,
+        'PASSWORD_NEW': str,
         'UNAME': str,
         'DEPARTMENT': str,
         'MAJOR': str,
@@ -283,7 +284,7 @@ def update_student(user_message: dict) -> bool:
         cursor = conn.cursor()
         cursor.execute('''
             UPDATE EndUser
-            SET UNAME=%s, DEPARTMENT=%s, MAJOR=%s
+            SET UNAME=%s,  DEPARTMENT=%s, MAJOR=%s
             WHERE UID=%s
             ''', (
             user_message['UNAME'],
@@ -300,6 +301,57 @@ def update_student(user_message: dict) -> bool:
                 user_message['PASSWORD'],
                 user_message['UID']
             ))
+        conn.commit()
+    except Exception as e:
+        print('Update error!')
+        print(e)
+        res = False
+    finally:
+        if conn:
+            conn.close()
+        return res
+
+
+def update_info(user_message: dict) -> bool:
+    '''
+        传入字典格式如下
+        user_message{
+            'UID': str,
+            'PASSWORD': str,
+            'PASSWORD_NEW': str,
+            'UNAME': str,
+            'DEPARTMENT': str,
+            'MAJOR': str,
+        }
+        返回bool
+        '''
+    try:
+        res = True
+        conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
+        cursor = conn.cursor()
+        cursor.execute('''
+                    SELECT UID, UNAME, DEPARTMENT, MAJOR
+                    FROM EndUser
+                    WHERE UID = %s AND PASSWORD = %s
+                    ''', (
+            user_message['UID'],
+            user_message['PASSWORD']
+        ))
+        temp = cursor.fetchall()
+        if len(temp) != 0:
+            cursor.execute('''
+                UPDATE EndUser
+                SET UNAME=%s, PASSWORD=%s, DEPARTMENT=%s, MAJOR=%s
+                WHERE UID=%s
+                ''', (
+                user_message['UNAME'],
+                user_message['PASSWORD_NEW'],
+                user_message['DEPARTMENT'],
+                user_message['MAJOR'],
+                user_message['UID']
+            ))
+        else:
+            res = False
         conn.commit()
     except Exception as e:
         print('Update error!')
@@ -389,10 +441,11 @@ def get_apply(UID: str):
         conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
         cursor = conn.cursor()
         cursor.execute('''
-                SELECT cat.CID, cname, apply_time, approve_time, result
-                FROM apply, approve, cat
-                WHERE approve.UID = %s AND approve.CID = apply.CID AND cat.CID = apply.CID AND cat.CID = approve.CID
-            ''', (UID,))
+            SELECT cat.CID, cname, apply_time, COALESCE(approve_time, '') AS approve_time, COALESCE(result, '审批中') AS result
+            FROM apply
+            LEFT JOIN approve ON approve.CID = apply.CID AND approve.UID = %s
+            INNER JOIN cat ON cat.CID = apply.CID
+        ''', (UID,))
         res = cursor.fetchall()
         print(res)
     except Exception as e:
@@ -415,30 +468,24 @@ def approveP(CID: str, UID: str) -> bool:
         res = True
         conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
         cursor = conn.cursor()
-        # 先把申请时间，喵咪状态等信息找出
+        # 先把喵咪状态等信息找出
         cursor.execute('''
-        SELECT apply_time, cstatus 
-        FROM  apply, cat
-        WHERE UID = %s AND  apply.CID = %s AND apply.CID = cat.CID
+        SELECT cstatus 
+        FROM apply, cat
+        WHERE UID = %s AND apply.CID = %s AND apply.CID = cat.CID
         ''', (UID, CID))
         CAT_mes = cursor.fetchall()
-        CSTATUS = CAT_mes[0][1]
-        if CSTATUS == 'H': CSTATUS = 'A'
-        APPLY_TIME = CAT_mes[0][0]
+        CSTATUS = CAT_mes[0][0]
+        if CSTATUS == '申请中': CSTATUS = '已领养'
         APPROVE_TIME = time.strftime("%Y-%m-%d-%H:%M")
-
-        # cat表内cstatus状态更新，删除apply表内的记录，把记录插入approve表
         cursor.execute('''
         UPDATE cat
         SET cstatus = %s
         WHERE CID = %s
-        DELETE
-        FROM apply
-        WHERE UID=%s AND CID=%s
         INSERT
         INTO approve
-        VALUES(%s, %s, %s, %s， %d)
-        ''', (CSTATUS, CID, UID, CID, CID, UID, APPLY_TIME, APPROVE_TIME, 1))
+        VALUES(%s, %s, %s, %s)
+        ''', (CSTATUS, CID, CID, UID, APPROVE_TIME, '成功'))
         conn.commit()
     except Exception as e:
         print('Approve error!')
@@ -460,26 +507,15 @@ def approveNP(CID: str, UID: str) -> bool:
         res = True
         conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
         cursor = conn.cursor()
-        # 先把申请时间，喵咪状态等信息找出
-        cursor.execute('''
-        SELECT apply_time, cstatus 
-        FROM  apply, cat
-        WHERE UID = %s AND  apply.CID = %s AND apply.CID = cat.CID
-        ''', (UID, CID))
-        CAT_mes = cursor.fetchall()
-        CSTATUS = CAT_mes[0][1]
-        APPLY_TIME = CAT_mes[0][0]
         APPROVE_TIME = time.strftime("%Y-%m-%d-%H:%M")
-
-        # 删除apply表内的记录，把记录插入approve表
         cursor.execute('''
-        DELETE
-        FROM apply
-        WHERE UID=%s AND CID=%s
+        UPDATE cat
+        SET Cstatus=%s
+        WHERE CID = %s 
         INSERT
         INTO approve
-        VALUES(%s, %s, %s, %s， %d)
-        ''', (UID, CID, CID, UID, APPLY_TIME, APPROVE_TIME, 0))
+        VALUES( %s, %s, %s, %s)
+        ''', ('健康', CID, CID, UID, APPROVE_TIME, '失败'))
         conn.commit()
     except Exception as e:
         print('Approve error!')
@@ -548,9 +584,7 @@ def new_cat(cat_info: dict) -> bool:
          Csex nchar(1),
          Ccolor nvarchar(50),
          Clocation nvarchar(50),
-         Cstatus char(2),
-         Csterilization char(1),
-         Story nvarchar(200)
+         Cstatus nvarchar(50)
         )
     返回bool
     '''
@@ -562,23 +596,21 @@ def new_cat(cat_info: dict) -> bool:
             SELECT *
             FROM cat
             WHERE CID = %s
-            ''', (cat_info['CID']))
+            ''', (cat_info['CID'],))
         if len(cursor.fetchall()) != 0:
             raise Exception('猫猫ID已存在!')
         # 插入新猫猫
         cursor.execute('''
         INSERT
         INTO cat
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES(%s, %s, %s, %s, %s, %s)
         ''', (
             cat_info['CID'],
             cat_info['CNAME'],
-            cat_info['Csex'],
-            cat_info['Ccolor'],
-            cat_info['Clocation'],
-            cat_info['Cstatus'],
-            cat_info['Csterilization'],
-            cat_info['Story']
+            cat_info['CSEX'],
+            cat_info['COLOR'],
+            cat_info['ACTIVITY_AREA'],
+            cat_info['STATUS'],
         ))
         conn.commit()
     except Exception as e:
@@ -622,7 +654,7 @@ def get_cat_info(CID: str) -> dict:
 
         # 把列表转换为字典
         res = list(res[0])
-        key_list = ['CID', 'CNAME', 'Csex', 'Ccolor', 'Clocation', 'Cstatus', 'Csterilization', 'Story']
+        key_list = ['CID', 'CNAME', 'Csex', 'Ccolor', 'Clocation', 'Cstatus', 'Story']
         ans = {}
         for i, key in zip(res, key_list):
             ans[key] = i
@@ -652,6 +684,45 @@ def cat_info():
     return rows
 
 
+def user_info():
+    conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
+    cursor = conn.cursor()
+    cursor.execute('''
+                SELECT EndUser.*, approve.CID
+                FROM EndUser
+             LEFT JOIN approve ON approve.UID = EndUser.UID
+            ''')
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+
+def apply_info():
+    conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
+    cursor = conn.cursor()
+    cursor.execute('''
+          SELECT apply.UID, EndUser.Uname, EndUser.department, EndUser.major, apply.CID
+          FROM apply, EndUser, cat
+          WHERE  apply.UID = EndUser.UID and apply.CID = cat.CID and cat.Cstatus = '健康'
+            ''')
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+
+def approve_info():
+    conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
+    cursor = conn.cursor()
+    cursor.execute('''
+      SELECT EndUser.UID, EndUser.Uname, cat.CID, cat.Cname, apply.apply_time, approve.approve_time, approve.result
+      FROM approve, EndUser, cat , apply
+      WHERE  apply.UID = EndUser.UID and approve.UID = EndUser.UID and approve.CID = cat.CID and apply.CID = approve.CID
+            ''')
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+
 # 更新猫猫信息
 def update_cat(cat_info: dict) -> bool:
     """
@@ -663,8 +734,6 @@ def update_cat(cat_info: dict) -> bool:
          Ccolor nvarchar(50),
          Clocation nvarchar(50),
          Cstatus char(2),
-         Csterilization char(1),
-         Story nvarchar(200)
         )
     返回bool
     """
@@ -672,19 +741,17 @@ def update_cat(cat_info: dict) -> bool:
         res = True
         conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
         cursor = conn.cursor()
-        # 更新book表
+        # 更新cat表
         cursor.execute('''
-            UPDATE book
-            SET CNAME=%s, Csex=%s, Ccolor=%s, Clocation=%s, Cstatus=%s, Csterilization=%s, Story=%s
+            UPDATE cat
+            SET CNAME=%s, Csex=%s, Ccolor=%s, Clocation=%s, Cstatus=%s
             WHERE CID=%s
             ''', (
             cat_info['CNAME'],
-            cat_info['Csex'],
-            cat_info['Ccolor'],
-            cat_info['Clocation'],
-            cat_info['Cstatus'],
-            cat_info['Csterilization'],
-            cat_info['Story'],
+            cat_info['GENDER'],
+            cat_info['GENDER'],
+            cat_info['ACTIVITY_AREA'],
+            cat_info['STATUS'],
             cat_info['CID']
         ))
 
@@ -743,11 +810,12 @@ def search_cat(info: str, restrict: str, UID: str = '') -> list:
         conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
         cursor = conn.cursor()
 
-        if info == 'ID/Cname/Csex/Clocation/Cstatus' or info == '':
+        if info == '':
             cursor.execute('''
             SELECT *
             FROM cat
             ''')
+            res = tuple_to_list(cursor.fetchall())
         elif restrict == 'CID':
             cursor.execute('''
             SELECT *
@@ -755,7 +823,6 @@ def search_cat(info: str, restrict: str, UID: str = '') -> list:
             WHERE CID = %s
             ''', info)
             res = tuple_to_list(cursor.fetchall())
-
     except Exception as e:
         print('Search error!')
         print(e)
@@ -774,10 +841,13 @@ def apply_cat(CID: str, UID: str) -> bool:
         cursor = conn.cursor()
         BORROW_DATE = time.strftime("%Y-%m-%d-%H:%M")
         cursor.execute('''
+        UPDATE cat
+        SET Cstatus = %s
+        WHERE CID = %s 
         INSERT
         INTO apply
         VALUES(%s, %s, %s)
-        ''', (CID, UID, BORROW_DATE))
+        ''', ('申请中', CID, CID, UID, BORROW_DATE))
         conn.commit()
     except Exception as e:
         print('apply error!')
