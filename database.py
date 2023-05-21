@@ -688,9 +688,12 @@ def user_info():
     conn = pymssql.connect(CONFIG['host'], CONFIG['user'], CONFIG['pwd'], CONFIG['db'])
     cursor = conn.cursor()
     cursor.execute('''
-                SELECT EndUser.*, approve.CID
+               SELECT EndUser.*, 
+                (SELECT cat.CID 
+                FROM cat 
+                WHERE cat.CID = approve.CID AND cat.cstatus = '已领养') AS AdoptedCatCID
                 FROM EndUser
-             LEFT JOIN approve ON approve.UID = EndUser.UID
+                LEFT JOIN approve ON approve.UID = EndUser.UID
             ''')
     rows = cursor.fetchall()
     conn.close()
@@ -703,7 +706,7 @@ def apply_info():
     cursor.execute('''
           SELECT apply.UID, EndUser.Uname, EndUser.department, EndUser.major, apply.CID
           FROM apply, EndUser, cat
-          WHERE  apply.UID = EndUser.UID and apply.CID = cat.CID and cat.Cstatus = '健康'
+          WHERE  apply.UID = EndUser.UID and apply.CID = cat.CID and cat.Cstatus = '申请中'
             ''')
     rows = cursor.fetchall()
     conn.close()
@@ -749,7 +752,7 @@ def update_cat(cat_info: dict) -> bool:
             ''', (
             cat_info['CNAME'],
             cat_info['GENDER'],
-            cat_info['GENDER'],
+            cat_info['COLOR'],
             cat_info['ACTIVITY_AREA'],
             cat_info['STATUS'],
             cat_info['CID']

@@ -161,7 +161,7 @@ def edit_user():
 def edit_cat():
     if request.method == 'POST':
         CID = request.form.get('CID')
-        Cname = request.form.get('Cname')
+        Cname = request.form.get('cname')
         gender = request.form.get('gender')
         color = request.form.get('color')
         activity_area = request.form.get('activity_area')

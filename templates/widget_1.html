@@ -335,15 +335,15 @@
 
   </style>
   <script>
-window.onload = function() {
-  // 获取所有编辑按钮
-  var editButtons = document.querySelectorAll(".editButton");
-    // 为每个编辑按钮添加事件监听器
 
+window.onload = function() {
+  var editButtons = document.querySelectorAll(".editButton");
   editButtons.forEach(function(button) {
     button.addEventListener("click", openEditModal);
   });
 };
+
+
 
 function openEditModal(event) {
   event.preventDefault();
@@ -357,15 +357,17 @@ function openEditModal(event) {
 
   var editForm = document.getElementById("editForm");
   editForm.CID.value = catId;
-  editForm.Cname.value = catName;
+  editForm.cname.value = catName;
   editForm.gender.value = catGender;
-  editForm.color.value = catId;
+  editForm.color.value = catColor;
   editForm.activity_area.value = catArea;
   editForm.status.value = catStatus;
 
   var editModal = document.getElementById("editModal");
+  console.log(event.target.dataset);
   editModal.style.display = "block";
 }
+
 
 function openEditModal2(event) {
   event.preventDefault();
@@ -385,7 +387,6 @@ function openEditModal2(event) {
   editForm.major.value = userMajor;
   editForm.cat.value = userCat;
 
-  // 显示弹窗
   var editModal2 = document.getElementById("editModal2");
   editModal2.style.display = "block";
 }
@@ -480,21 +481,33 @@ function addRow(event) {
     type: 'POST',
     data: rowData,
     success: function(response) {
-      // 根据实际情况处理成功响应
       if (response === 'Success') {
-        // 在表格的tbody中添加新行
         var newRow = $('<tr>');
+
         rowData.forEach(function(field) {
           newRow.append('<td>' + field.value + '</td>');
         });
-        newRow.append('<td><button class="editButton" onclick="openEditModal(event)">编辑</button></td>');
-        newRow.append('<td><button class="deleteButton" onclick="deleteRow(event)">删除</button></td>');
+
+        var editButton = $('<button class="editButton">编辑</button>');
+        editButton.data({
+          'cat-id': rowData[0].value,
+          'cat-name': rowData[1].value,
+          'cat-gender': rowData[2].value,
+          'cat-color': rowData[3].value,
+          'cat-area': rowData[4].value,
+          'cat-status': rowData[5].value
+        });
+        editButton.on('click', openEditModal);
+
+        var deleteButton = $('<button class="deleteButton">删除</button>');
+        deleteButton.on('click', deleteRow);
+
+        newRow.append($('<td>').append(editButton));
+        newRow.append($('<td>').append(deleteButton));
+
         $('table tbody').append(newRow);
 
-        // 清空表单数据
         form[0].reset();
-
-        // 关闭添加模态框
         closeAddModal();
       } else {
         console.error('添加失败');
@@ -505,6 +518,7 @@ function addRow(event) {
     }
   });
 }
+
 
   </script>
     </script>
