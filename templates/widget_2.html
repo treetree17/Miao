@@ -172,8 +172,20 @@
       return; // 结束函数执行
       }
 
-      if (adoptStatus === '申请中') { // 检查领养状态是否为'已领养'
+      if (adoptStatus === '申请中') { // 检查领养状态是否为'申请中'
       button.textContent = "申请中"; // 修改按钮文本
+      button.disabled = true; // 禁用按钮
+      return; // 结束函数执行
+      }
+
+      if (adoptStatus === '离校') { // 检查领养状态是否为'离校'
+      button.textContent = "无法申请"; // 修改按钮文本
+      button.disabled = true; // 禁用按钮
+      return; // 结束函数执行
+      }
+
+      if (adoptStatus === '喵星') { // 检查领养状态是否为'喵星'
+      button.textContent = "无法申请"; // 修改按钮文本
       button.disabled = true; // 禁用按钮
       return; // 结束函数执行
       }
@@ -195,7 +207,7 @@
 
 <body>
   <div class="container">
-    <h1 align="center">猫咪管理系统</h1>
+    <h1 align="center">校猫管理系统</h1>
     <div class="menu">
       <a href="#" id="catInfoLink" onclick="bindWindowOnLoad(showCatInfo)">查看猫信息</a>
       <a href="#" id="adoptionStatusLink" onclick="bindWindowOnLoad(showAdoptionStatus)">查看领养状态</a>
@@ -228,7 +240,7 @@
     </div>
     <div class="content">
       <div id="cat-info" class="cat-info">
-        <h2>查看猫信息</h2>
+        <h2>查看猫信息&#x1F63C;</h2>
         <form action="/cat">
             <button onclick="searchCat()">查看</button>
             </form>
@@ -262,7 +274,7 @@
         </table>
       </div>
       <div id="adoption-status" class="adoption-status">
-        <h2>查看领养状态</h2>
+        <h2>查看领养状态&#x1F440;</h2>
         <form action="/apply_info">
             <button>查看</button>
             </form>
@@ -290,7 +302,7 @@
         </table>
       </div>
       <div id="edit-profile" class="edit-profile">
-        <h2>编辑个人信息</h2>
+        <h2>编辑个人信息&#x1F4DB;</h2>
 
         <form action="/edit_user" method="post">
 

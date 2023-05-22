@@ -21,6 +21,9 @@ app = Flask(__name__)
 uid = "user"
 cid = "cat"
 
+app.static_folder = 'static'
+app.static_url_path = '/static'
+
 
 class Login():
     def __init__(self):
